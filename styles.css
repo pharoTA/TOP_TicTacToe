@@ -1,3 +1,27 @@
 * {
     background-color: aqua;
 }
+
+.mainContainer {
+    background-color: blue;
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 6rem);
+    grid-template-rows: repeat(3, 6rem);
+    gap: 3px;
+    background-color: blueviolet;
+}
+
+.scoreContainer {
+    height: 4rem;
+    width: 18rem;
+}
