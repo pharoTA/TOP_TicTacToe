@@ -11,9 +11,10 @@
 // Game mechanic ____ TO UPDATE
 /* 
     Init Board at initial stage
-    each play brings to next stage
-    Then check victory
+    if valide, each move brings the game to a next stage
+    Then check victory or draw
         -   change player if no victory
+        -   claim draw and init game board 
         -   claim victory and init game board
 */
 
@@ -41,13 +42,28 @@ const game = (function () {
     let playerTurn = 0;
     gameGrid = Array(9).fill(null);
 
+    // Game functions
+
     const updateScore = () => {
         document.querySelector("#playerScore1").innerHTML = player1.getScore();
         document.querySelector("#playerScore2").innerHTML = player2.getScore();
     };
 
-    updateScore();
-
+    const computeMove = (move) => {
+        const isMoveValid = playMove(move, players[game.playerTurn % 2]);
+        if (isMoveValid) {
+            const gameStatus = game.checkGameOver(game.playerTurn, move)
+            if (gameStatus == 1) {
+                game.processWin(game.playerTurn);
+                game.newRound();
+            } else if (gameStatus == 0) {
+                game.processDraw();
+                game.newRound();
+            } else {
+                game.playerTurn += 1;
+            };
+        }
+    };
     const playMove = (move, player) => {
         if (gameGrid[move] == null && !isNaN(move)) {
             gameGrid[move] = player.symbol;
@@ -67,20 +83,37 @@ const game = (function () {
             return false
         }
     };
-    const computeMove = (move) => {
-        const isMoveValid = playMove(move, players[game.playerTurn % 2]);
-        if (isMoveValid) {
-            const gameStatus = game.checkGameOver(game.playerTurn, move)
-            if (gameStatus == 1) {
-                game.processWin(game.playerTurn);
-                game.newRound();
-            } else if (gameStatus == 0) {
-                game.processDraw();
-                game.newRound();
-            } else {
-                game.playerTurn += 1;
-            };
+
+    const checkGameOver = (playerTurn, move) => {
+        const currentPlayer = players[playerTurn % 2];
+        let gameStatus = 2;
+        // check for draw
+        if (gameGrid.indexOf(null) == -1) {
+            gameStatus = 0;
+        } else { // check for victory
+            const row = Math.floor(move / 3);
+            if (currentPlayer.playerMoves[row * 3] && currentPlayer.playerMoves[row * 3 + 1] && currentPlayer.playerMoves[row * 3 + 2]) {
+                gameStatus = 1;
+            }
+            if (currentPlayer.playerMoves[move % 9] && currentPlayer.playerMoves[(move + 3) % 9] && currentPlayer.playerMoves[(move + 6) % 9]) {
+                gameStatus = 1;
+            }
+            if (currentPlayer.playerMoves[0] && currentPlayer.playerMoves[4] && currentPlayer.playerMoves[8] || (currentPlayer.playerMoves[2] && currentPlayer.playerMoves[4] && currentPlayer.playerMoves[6])) {
+                gameStatus = 1;
+            }
         }
+        return gameStatus
+    };
+
+    const processWin = (playerTurn) => {
+        players[playerTurn % 2].addScore();
+        document.querySelector(".lastGameIssue").innerHTML = players[playerTurn % 2].name.concat(" wins !");
+        updateScore();
+    };
+
+    const processDraw = () => {
+        document.querySelector(".lastGameIssue").innerHTML = "Draw !";
+        updateScore();
     };
 
     const newRound = () => {
@@ -94,43 +127,12 @@ const game = (function () {
         };
     }
 
-    const processWin = (playerTurn) => {
-        players[playerTurn % 2].addScore();
-        document.querySelector(".lastGameIssue").innerHTML = players[playerTurn % 2].name.concat(" wins !");
-        updateScore();
-    };
-
-    const processDraw = () => {
-        document.querySelector(".lastGameIssue").innerHTML = "Draw !";
-        updateScore();
-    };
-
-    const checkGameOver = (playerTurn, move) => {
-        // check for draw 
-        const player = players[playerTurn % 2];
-        let gameStatus = 2;
-        if (gameGrid.indexOf(null) == -1) {
-            gameStatus = 0;
-        } else {
-            const row = Math.floor(move / 3);
-
-            if (player.playerMoves[row * 3] && player.playerMoves[row * 3 + 1] && player.playerMoves[row * 3 + 2]) {
-                gameStatus = 1;
-            }
-            if (player.playerMoves[move % 9] && player.playerMoves[(move + 3) % 9] && player.playerMoves[(move + 6) % 9]) {
-                gameStatus = 1;
-            }
-            if (player.playerMoves[0] && player.playerMoves[4] && player.playerMoves[8] || (player.playerMoves[2] && player.playerMoves[4] && player.playerMoves[6])) {
-                gameStatus = 1;
-            }
-        }
-        return gameStatus
-    };
+    // init
+    updateScore();
     return { computeMove, checkGameOver, playerTurn, newRound, processWin, processDraw };
 })();
 
 const gridCells = document.querySelectorAll(".gridCells");
-
 for (i = 0; i < gridCells.length; i++) {
     const gridCell = gridCells[i];
     gridCell.addEventListener("click", (e) => {
@@ -139,26 +141,8 @@ for (i = 0; i < gridCells.length; i++) {
     });
 };
 
-const playAgainButton = document.querySelector(".playAgainButton");
 
+const playAgainButton = document.querySelector(".playAgainButton");
 playAgainButton.addEventListener("click", () => {
     game.newRound();
-})
-
-/*
-
-
-const playButton = document.querySelector(".playButton");
-
-playButton.addEventListener("click", () => {
-    const inputMove = document.querySelector(".enterMove").value;
-    document.querySelector(".enterMove").value = "";
-    game.computeMove(inputMove);
-    const gameStatus = game.checkGameOver(game.playerTurn);
-    if (gameStatus == 1 || gameStatus == 0) {
-        game.processWin(game.playerTurn);
-        game.newRound();
-    };
 });
-
-*/
