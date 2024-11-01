@@ -1,11 +1,14 @@
 * {
-    background-color: aqua;
+    color: white;
+}
+
+body {
+    background: linear-gradient(135deg, #b3e5fc, #81d4fa, #4fc3f7, #29b6f6);
 }
 
 .mainContainer {
-    background-color: blue;
     width: 100vw;
-    height: 90vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,11 +20,33 @@
     display: grid;
     grid-template-columns: repeat(3, 6rem);
     grid-template-rows: repeat(3, 6rem);
-    gap: 3px;
-    background-color: blueviolet;
+    gap: 10px;
+}
+
+.gridCells {
+    background-color: white;
+    border-radius: 10px;
 }
 
 .scoreContainer {
     height: 4rem;
-    width: 18rem;
+    width: 10rem;
+}
+
+.scoreContainer>* {
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+
+.playAgainButton {
+    background-color: white;
+    color: #29b6f6;
+    border: none;
+    padding: 1rem;
+    border-radius: 20px 0;
+    font-size: x-large;
 }

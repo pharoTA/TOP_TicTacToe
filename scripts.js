@@ -43,6 +43,13 @@ const game = (function () {
     let playerTurn = 0;
     gameGrid = Array(9).fill(null);
 
+    const playerOneScore = document.querySelector("#playerOneScore>.playerScore");
+    playerOneScore.innerHTML = player1.getScore();
+
+    const playerTwoScore = document.querySelector("#playerTwoScore>.playerScore");
+    playerTwoScore.innerHTML = player2.getScore();
+
+
     const playMove = (move, player) => {
         if (gameGrid[move] == null) {
             gameGrid[move] = player.symbol;
@@ -65,8 +72,11 @@ const game = (function () {
         player1.playerMoves = Array(9).fill(null);
         player2.playerMoves = Array(9).fill(null);
         gameGrid = Array(9).fill(null);
-    };
-
+        const gridCells = document.querySelectorAll(".gridCells")
+        for (i = 0; i < gridCells.length; i++) {
+            gridCells[i].style.backgroundColor = "white";
+        };
+    }
     const processWin = (playerTurn) => {
         players[playerTurn % 2].addScore();
         console.log(players[playerTurn % 2].getName(), "wins !");
@@ -101,6 +111,30 @@ const game = (function () {
     return { computeMove, checkGameOver, playerTurn, newRound, processWin };
 })();
 
+const gridCells = document.querySelectorAll(".gridCells");
+for (i = 0; i < gridCells.length; i++) {
+    const gridCell = gridCells[i];
+    gridCell.addEventListener("click", () => {
+        const inputMove = i
+        game.computeMove(inputMove);
+        gridCell.style.backgroundColor = "red";
+        const gameStatus = game.checkGameOver(game.playerTurn);
+        if (gameStatus == 1 || gameStatus == 0) {
+            game.processWin(game.playerTurn);
+            game.newRound();
+        };
+    })
+}
+
+const playAgainButton = document.querySelector(".playAgainButton");
+
+playAgainButton.addEventListener("click", () => {
+    game.newRound();
+})
+
+/*
+
+
 const playButton = document.querySelector(".playButton");
 
 playButton.addEventListener("click", () => {
@@ -113,3 +147,5 @@ playButton.addEventListener("click", () => {
         game.newRound();
     };
 });
+
+*/
