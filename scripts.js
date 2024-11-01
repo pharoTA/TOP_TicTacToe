@@ -49,14 +49,10 @@ const game = (function () {
     updateScore();
 
     const playMove = (move, player) => {
-        console.log(move);
-        console.log(gameGrid);
         if (gameGrid[move] == null && !isNaN(move)) {
             gameGrid[move] = player.symbol;
             player.playerMoves[move] = 1;
             const grid = document.querySelector("#gridCell".concat(move.toString()));
-            console.log("#gridCell".concat(move.toString()));
-            console.log(player.symbol);
             const logoContainer = document.createElement("div");
             if (player.symbol == "X") {
                 logoContainer.style.backgroundImage = "url('./src/x.svg')";
@@ -72,10 +68,18 @@ const game = (function () {
         }
     };
     const computeMove = (move) => {
-        const isMoveValid = playMove(parseInt(move, 10), players[playerTurn % 2]);
+        const isMoveValid = playMove(move, players[game.playerTurn % 2]);
         if (isMoveValid) {
-            playerTurn += 1;
-            console.log(gameGrid);
+            const gameStatus = game.checkGameOver(game.playerTurn, move)
+            if (gameStatus == 1) {
+                game.processWin(game.playerTurn);
+                game.newRound();
+            } else if (gameStatus == 0) {
+                game.processDraw();
+                game.newRound();
+            } else {
+                game.playerTurn += 1;
+            };
         }
     };
 
@@ -101,22 +105,20 @@ const game = (function () {
         updateScore();
     };
 
-    const checkGameOver = (playerTurn) => {
+    const checkGameOver = (playerTurn, move) => {
         // check for draw 
         const player = players[playerTurn % 2];
         let gameStatus = 2;
         if (gameGrid.indexOf(null) == -1) {
             gameStatus = 0;
         } else {
-            for (index = 0; index < 9; index++) {
-                if (player.playerMoves[index] && player.playerMoves[index + 1] && player.playerMoves[index + 2]) {
-                    gameStatus = 1;
-                }
+            const row = Math.floor(move / 3);
+
+            if (player.playerMoves[row * 3] && player.playerMoves[row * 3 + 1] && player.playerMoves[row * 3 + 2]) {
+                gameStatus = 1;
             }
-            for (index = 0; index < 3; index++) {
-                if (player.playerMoves[index] && player.playerMoves[index + 3] && player.playerMoves[index + 6]) {
-                    gameStatus = 1;
-                }
+            if (player.playerMoves[move % 9] && player.playerMoves[(move + 3) % 9] && player.playerMoves[(move + 6) % 9]) {
+                gameStatus = 1;
             }
             if (player.playerMoves[0] && player.playerMoves[4] && player.playerMoves[8] || (player.playerMoves[2] && player.playerMoves[4] && player.playerMoves[6])) {
                 gameStatus = 1;
@@ -134,15 +136,6 @@ for (i = 0; i < gridCells.length; i++) {
     gridCell.addEventListener("click", (e) => {
         const inputMove = e.target.id.slice(-1);
         game.computeMove(inputMove);
-        const gameStatus = game.checkGameOver(game.playerTurn);
-        if (gameStatus == 1) {
-            game.processWin(game.playerTurn);
-            game.newRound();
-        };
-        if (gameStatus == 0) {
-            game.processDraw();
-            game.newRound();
-        };
     });
 };
 
