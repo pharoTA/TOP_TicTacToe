@@ -96,6 +96,11 @@ const game = (function () {
         updateScore();
     };
 
+    const processDraw = () => {
+        document.querySelector(".lastGameIssue").innerHTML = "Draw !";
+        updateScore();
+    };
+
     const checkGameOver = (playerTurn) => {
         // check for draw 
         const player = players[playerTurn % 2];
@@ -119,7 +124,7 @@ const game = (function () {
         }
         return gameStatus
     };
-    return { computeMove, checkGameOver, playerTurn, newRound, processWin };
+    return { computeMove, checkGameOver, playerTurn, newRound, processWin, processDraw };
 })();
 
 const gridCells = document.querySelectorAll(".gridCells");
@@ -135,6 +140,7 @@ for (i = 0; i < gridCells.length; i++) {
             game.newRound();
         };
         if (gameStatus == 0) {
+            game.processDraw();
             game.newRound();
         };
     });
