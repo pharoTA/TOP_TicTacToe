@@ -39,6 +39,7 @@ const game = (function () {
     const player1 = createPlayer("Player 1", "X");
     document.querySelector("#playerOneName").value = "Player 1"
     document.querySelector("#playerTwoName").value = "Player 2"
+    let drawScore = 0;
     const player2 = createPlayer("Player 2", "O");
     const players = [player1, player2];
     let playerTurn = 0;
@@ -49,6 +50,7 @@ const game = (function () {
     const updateScore = () => {
         document.querySelector("#playerScore1").innerHTML = player1.getScore();
         document.querySelector("#playerScore2").innerHTML = player2.getScore();
+        document.querySelector("#drawScore").innerHTML = drawScore;
     };
 
     const computeMove = (move) => {
@@ -115,11 +117,14 @@ const game = (function () {
             players[playerTurn % 2].name = document.querySelector("#playerTwoName").value
         }
         document.querySelector(".lastGameIssue").innerHTML = players[playerTurn % 2].name.concat(" wins !");
+        document.querySelector(".lastGameIssue").style.color = "white";
         updateScore();
     };
 
     const processDraw = () => {
         document.querySelector(".lastGameIssue").innerHTML = "Draw !";
+        document.querySelector(".lastGameIssue").style.color = "white";
+        drawScore += 1;
         updateScore();
     };
 

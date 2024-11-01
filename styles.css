@@ -1,5 +1,6 @@
 * {
     color: white;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 body {
@@ -13,7 +14,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .grid {
@@ -42,8 +43,13 @@ body {
     color: white;
     font-size: x-large;
     width: 6rem;
+    padding: 0;
     background: none;
     border: none;
+}
+
+input {
+    text-align: right;
 }
 
 .playerIcon {
@@ -62,8 +68,8 @@ body {
 }
 
 .scoreContainer {
-    height: 4rem;
-    width: 10rem;
+    height: 7rem;
+    width: 15rem;
 }
 
 .scoreContainer>* {
@@ -71,6 +77,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    gap: 2rem;
+}
+
+.drawScore {
+    font-size: x-large;
 }
 
 .playAgainButton {
@@ -78,11 +89,12 @@ body {
     color: #29b6f6;
     border: none;
     padding: 1rem;
-    margin: 2rem;
+    margin: 1rem;
     border-radius: 20px 0;
     font-size: x-large;
 }
 
 .lastGameIssue {
     font-size: x-large;
+    color: transparent;
 }
