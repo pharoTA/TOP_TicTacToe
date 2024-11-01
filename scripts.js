@@ -53,6 +53,10 @@ const game = (function () {
         document.querySelector("#drawScore").innerHTML = drawScore;
     };
 
+    const updateTurnIndicator = () => {
+        document.querySelector(".playerTurnIndicator").innerHTML = players[playerTurn % 2].name.concat(", it is your turn !")
+    };
+
     const computeMove = (move) => {
         const isMoveValid = playMove(move, players[game.playerTurn % 2]);
         if (isMoveValid) {
@@ -65,6 +69,7 @@ const game = (function () {
                 game.newRound();
             } else {
                 game.playerTurn += 1;
+                updateTurnIndicator();
             };
         }
     };
@@ -141,6 +146,7 @@ const game = (function () {
 
     // init
     updateScore();
+    updateTurnIndicator();
     return { computeMove, checkGameOver, playerTurn, newRound, processWin, processDraw };
 })();
 
