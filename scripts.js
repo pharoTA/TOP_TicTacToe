@@ -37,6 +37,8 @@ function createPlayer(playerName, playerSymbol) {
 const game = (function () {
     // Game variables 
     const player1 = createPlayer("Player 1", "X");
+    document.querySelector("#playerOneName").value = "Player 1"
+    document.querySelector("#playerTwoName").value = "Player 2"
     const player2 = createPlayer("Player 2", "O");
     const players = [player1, player2];
     let playerTurn = 0;
@@ -107,6 +109,11 @@ const game = (function () {
 
     const processWin = (playerTurn) => {
         players[playerTurn % 2].addScore();
+        if (playerTurn % 2 == 0) {
+            players[playerTurn % 2].name = document.querySelector("#playerOneName").value
+        } else {
+            players[playerTurn % 2].name = document.querySelector("#playerTwoName").value
+        }
         document.querySelector(".lastGameIssue").innerHTML = players[playerTurn % 2].name.concat(" wins !");
         updateScore();
     };

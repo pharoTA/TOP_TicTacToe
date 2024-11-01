@@ -38,6 +38,14 @@ body {
     background-size: auto;
 }
 
+.playerName {
+    color: white;
+    font-size: x-large;
+    width: 6rem;
+    background: none;
+    border: none;
+}
+
 .playerIcon {
     width: 2rem;
     height: 2rem;
@@ -65,13 +73,16 @@ body {
     justify-content: space-around;
 }
 
-
-
 .playAgainButton {
     background-color: white;
     color: #29b6f6;
     border: none;
     padding: 1rem;
+    margin: 2rem;
     border-radius: 20px 0;
+    font-size: x-large;
+}
+
+.lastGameIssue {
     font-size: x-large;
 }
