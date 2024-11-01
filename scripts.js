@@ -54,7 +54,8 @@ const game = (function () {
     };
 
     const updateTurnIndicator = () => {
-        document.querySelector(".playerTurnIndicator").innerHTML = players[playerTurn % 2].name.concat(", it is your turn !")
+        document.querySelector(".playerTurnIndicator").innerHTML = players[game.playerTurn % 2].name.concat(", it is your turn !");
+        console.log(players[playerTurn % 2].name);
     };
 
     const computeMove = (move) => {
@@ -69,7 +70,7 @@ const game = (function () {
                 game.newRound();
             } else {
                 game.playerTurn += 1;
-                updateTurnIndicator();
+                game.updateTurnIndicator();
             };
         }
     };
@@ -123,6 +124,7 @@ const game = (function () {
         }
         document.querySelector(".lastGameIssue").innerHTML = players[playerTurn % 2].name.concat(" wins !");
         document.querySelector(".lastGameIssue").style.color = "white";
+        game.playerTurn += 1;
         updateScore();
     };
 
@@ -130,6 +132,7 @@ const game = (function () {
         document.querySelector(".lastGameIssue").innerHTML = "Draw !";
         document.querySelector(".lastGameIssue").style.color = "white";
         drawScore += 1;
+        game.playerTurn += 1;
         updateScore();
     };
 
@@ -146,9 +149,10 @@ const game = (function () {
 
     // init
     updateScore();
-    updateTurnIndicator();
-    return { computeMove, checkGameOver, playerTurn, newRound, processWin, processDraw };
+    return { computeMove, checkGameOver, playerTurn, newRound, processWin, processDraw, updateTurnIndicator };
 })();
+
+game.updateTurnIndicator();
 
 const gridCells = document.querySelectorAll(".gridCells");
 for (i = 0; i < gridCells.length; i++) {
