@@ -14,6 +14,7 @@
         <h1 class="guidelines">Click on the cells to play</h1>
         <div class="gridContainer">
             <div class="grid">
+                <div class="gridCells" id="gridCell0"></div>
                 <div class="gridCells" id="gridCell1"></div>
                 <div class="gridCells" id="gridCell2"></div>
                 <div class="gridCells" id="gridCell3"></div>
@@ -22,17 +23,19 @@
                 <div class="gridCells" id="gridCell6"></div>
                 <div class="gridCells" id="gridCell7"></div>
                 <div class="gridCells" id="gridCell8"></div>
-                <div class="gridCells" id="gridCell9"></div>
             </div>
         </div>
         <div class="scoreContainer">
+            <div class="lastGameIssue"></div>
             <div id="playerOneScore">
-                <div class="playerName">Player 1</div>
-                <div class="playerScore"></div>
+                <div class="playerIcon"></div>
+                <div class="playerName">Player 1 :</div>
+                <div class="playerScore" id="playerScore1"></div>
             </div>
             <div id="playerTwoScore">
-                <div class="playerName">Player 2</div>
-                <div class="playerScore"></div>
+                <div class="playerIcon"></div>
+                <div class="playerName">Player 2 :</div>
+                <div class="playerScore" id="playerScore2"></div>
             </div>
         </div>
         <button class="playAgainButton">Play again ?</button>

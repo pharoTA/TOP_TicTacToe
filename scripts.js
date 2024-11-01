@@ -19,14 +19,14 @@
 
 // Players, initalize at least twice
 // Factory function
-function createPlayer(name, playerSymbol) {
-    const getName = () => name;
+function createPlayer(playerName, playerSymbol) {
     const symbol = playerSymbol;
+    const name = playerName;
     const playerMoves = Array(9).fill(null);
     let playerScore = 0;
     const addScore = () => playerScore++;
     const getScore = () => playerScore;
-    return { symbol, playerMoves, addScore, getName, getScore }
+    return { symbol, playerMoves, addScore, getScore, name }
 }
 
 // Game function, initialize only once
@@ -35,28 +35,39 @@ function createPlayer(name, playerSymbol) {
 
 const game = (function () {
     // Game variables 
-    const symbols = ["X", "O"];
-    const firstValue = Math.floor(Math.random() * 2);
-    const player1 = createPlayer("Pierre", symbols[firstValue]);
-    const player2 = createPlayer("Sarah", symbols[(firstValue + 1) % 2]);
+    const player1 = createPlayer("Player 1", "X");
+    const player2 = createPlayer("Player 2", "O");
     const players = [player1, player2];
     let playerTurn = 0;
     gameGrid = Array(9).fill(null);
 
-    const playerOneScore = document.querySelector("#playerOneScore>.playerScore");
-    playerOneScore.innerHTML = player1.getScore();
+    const updateScore = () => {
+        document.querySelector("#playerScore1").innerHTML = player1.getScore();
+        document.querySelector("#playerScore2").innerHTML = player2.getScore();
+    };
 
-    const playerTwoScore = document.querySelector("#playerTwoScore>.playerScore");
-    playerTwoScore.innerHTML = player2.getScore();
-
+    updateScore();
 
     const playMove = (move, player) => {
-        if (gameGrid[move] == null) {
+        console.log(move);
+        console.log(gameGrid);
+        if (gameGrid[move] == null && !isNaN(move)) {
             gameGrid[move] = player.symbol;
             player.playerMoves[move] = 1;
+            const grid = document.querySelector("#gridCell".concat(move.toString()));
+            console.log("#gridCell".concat(move.toString()));
+            console.log(player.symbol);
+            const logoContainer = document.createElement("div");
+            if (player.symbol == "X") {
+                logoContainer.style.backgroundImage = "url('./src/x.svg')";
+            } else {
+                logoContainer.style.backgroundImage = "url('./src/circle.svg')";
+            }
+            logoContainer.style.backgroundSize = "100% 100%"
+            grid.appendChild(logoContainer);
             return true
         } else {
-            console.log("Move not possible. Play again.")
+            alert("Move not possible. Play again.")
             return false
         }
     };
@@ -75,15 +86,15 @@ const game = (function () {
         const gridCells = document.querySelectorAll(".gridCells")
         for (i = 0; i < gridCells.length; i++) {
             gridCells[i].style.backgroundColor = "white";
+            gridCells[i].innerHTML = "";
         };
     }
+
     const processWin = (playerTurn) => {
         players[playerTurn % 2].addScore();
-        console.log(players[playerTurn % 2].getName(), "wins !");
-        console.log(players[0].getName(), players[0].getScore(), " - ", players[1].getName(), players[1].getScore());
+        document.querySelector(".lastGameIssue").innerHTML = players[playerTurn % 2].name.concat(" wins !");
+        updateScore();
     };
-
-
 
     const checkGameOver = (playerTurn) => {
         // check for draw 
@@ -112,19 +123,22 @@ const game = (function () {
 })();
 
 const gridCells = document.querySelectorAll(".gridCells");
+
 for (i = 0; i < gridCells.length; i++) {
     const gridCell = gridCells[i];
-    gridCell.addEventListener("click", () => {
-        const inputMove = i
+    gridCell.addEventListener("click", (e) => {
+        const inputMove = e.target.id.slice(-1);
         game.computeMove(inputMove);
-        gridCell.style.backgroundColor = "red";
         const gameStatus = game.checkGameOver(game.playerTurn);
-        if (gameStatus == 1 || gameStatus == 0) {
+        if (gameStatus == 1) {
             game.processWin(game.playerTurn);
             game.newRound();
         };
-    })
-}
+        if (gameStatus == 0) {
+            game.newRound();
+        };
+    });
+};
 
 const playAgainButton = document.querySelector(".playAgainButton");
 

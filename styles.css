@@ -26,6 +26,31 @@ body {
 .gridCells {
     background-color: white;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gridCells>* {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
+.playerIcon {
+    width: 2rem;
+    height: 2rem;
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+#playerOneScore .playerIcon {
+    background-image: url("./src/xWhite.svg");
+}
+
+#playerTwoScore .playerIcon {
+    background-image: url("./src/circleWhite.svg");
 }
 
 .scoreContainer {
